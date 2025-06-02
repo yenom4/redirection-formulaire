@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirection Formulaire</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #f5f5f5;
+            margin: 0;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4285f4;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .serial-info {
+            background: #e8f0fe;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-weight: bold;
+            color: #1967d2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🔄 Redirection en cours</h2>
+        <div class="loader"></div>
+        <p>Préparation du formulaire...</p>
+        <div id="serial-info" class="serial-info" style="display:none;">
+            <span>📋 Numéro de série : </span><span id="serial-number"></span>
+        </div>
+    </div>
+
+    <script>
+        // Récupérer le paramètre 'serial' de l'URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const serialNumber = urlParams.get('serial');
+        
+        // Configuration
+        const FORM_ID = "1FAIpQLSeeFp9qodMk-5XIK3ysxoYRsykHg3CFDpc3PwZO1z4DZIbcPg";
+        const FIELD_ID = "1909385512";
+        
+        // Afficher le numéro de série s'il existe
+        if (serialNumber) {
+            document.getElementById('serial-info').style.display = 'block';
+            document.getElementById('serial-number').textContent = serialNumber;
+        }
+        
+        // Construire l'URL du formulaire
+        let formUrl = `https://docs.google.com/forms/d/e/${FORM_ID}/viewform?usp=pp_url`;
+        
+        if (serialNumber) {
+            formUrl += `&entry.${FIELD_ID}=${encodeURIComponent(serialNumber)}`;
+        }
+        
+        // Redirection après 3 secondes
+        setTimeout(function() {
+            window.location.href = formUrl;
+        }, 3000);
+        
+        // Debug dans la console
+        console.log('Numéro de série:', serialNumber || 'Aucun');
+        console.log('URL finale:', formUrl);
+    </script>
+</body>
+</html>
